@@ -33,7 +33,7 @@ export default function Chat() {
     const isSending = status === "submitted" || status === "streaming";
     const canSubmit = input.trim().length > 0;
 
-    return <div className="mx-auto flex h-dvh w-full max-w-4xl flex-col p-4 md:p-6">
+    return <div className="mx-auto flex h-[calc(100vh-4rem)] w-full max-w-4xl flex-col p-4 md:p-6">
         <div className="flex flex-col h-full">
             <Conversation className="min-h-0 flex-1">
                 <ConversationContent >

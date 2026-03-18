@@ -13,7 +13,10 @@ const openrouter = createOpenAI({
 
 export async function POST(req: Request) {
   try {
-    const { messages }: { messages: UIMessage[] } = await req.json();
+    const body = (await req.json().catch(() => null)) as
+      | { messages?: UIMessage[] }
+      | null;
+    const messages = body?.messages;
 
     if (!process.env.OPENROUTER_API_KEY) {
       return new Response("Missing OPENROUTER_API_KEY in .env.local", {
@@ -21,10 +24,21 @@ export async function POST(req: Request) {
       });
     }
 
+    if (!Array.isArray(messages)) {
+      return new Response("Invalid request body: expected { messages: UIMessage[] }", {
+        status: 400,
+      });
+    }
+
     const result = streamText({
-      // OpenRouter model. List available models: https://openrouter.ai/api/v1/models
-      model: openrouter.chat("deepseek/deepseek-chat"),
+      model: openrouter.chat("google/gemma-3-27b-it:free"),
+      // system:
+      //   "You are a helpful chat assistant. Be concise by default, ask a brief clarifying question when needed, and format answers clearly using markdown when helpful.",
       messages: await convertToModelMessages(messages),
+      temperature: 0.7,
+      topP: 0.9,
+      maxOutputTokens: 1024,
+      abortSignal: req.signal,
     });
 
     return result.toUIMessageStreamResponse();
