@@ -3,7 +3,7 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { config } from "dotenv";
 
 config({ path: ".env.local" });
-// create a neon client nad ! for not null
+// create a neon client and ! for not null
 const sql = neon(process.env.NEON_DATABASE_URL!);
 
 export const db = drizzle(sql);
