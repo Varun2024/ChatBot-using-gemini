@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     }
 
     const result = streamText({
-      model: openrouter.chat("google/gemma-3-27b-it:free"),
+      model: openrouter.chat("google/gemma-3-4b-it:free"),
       // system:
       //   "You are a helpful chat assistant. Be concise by default, ask a brief clarifying question when needed, and format answers clearly using markdown when helpful.",
       messages: await convertToModelMessages(messages),
