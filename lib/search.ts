@@ -7,7 +7,7 @@ import { generateEmbedding } from "./embeddings";
 export async function searchDocuments(
     query: string,
     limit: number = 5,
-    threshold: number = 0.5
+    threshold: number = 0.25
 ) {
     const queryEmbedding = await generateEmbedding(query);
     // Calculate cosine similarity and filter results based on threshold
